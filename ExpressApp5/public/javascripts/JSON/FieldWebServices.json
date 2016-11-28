@@ -1,0 +1,328 @@
+﻿
+[
+	{
+		"group": "api", 
+		"service": "areas", 
+		"version": "",
+		"method": "POST", 
+		"param_required": [ "project_id" ], 
+		"param_optional": [ "synced_date", "fresh_sync" ]
+	},
+	{
+		"group": "api", 
+		"service": "binary_data", 
+		"version": "",
+		"method": "POST", 
+		"param_required": [ "project_id", "object_type", "object_id" ], 
+		"param_optional": [ "image_type", "page" ]
+	},
+	{
+		"group": "api", 
+		"service": "companies", 
+		"version": "",
+		"method": "POST", 
+		"param_required": [ "project_id" ], 
+		"param_optional": [ "max_date" ]
+	},
+	{
+		"group": "api", 
+		"service": "get_categories", 
+		"version": "",
+		"method": "POST", 
+		"param_required": [ "project_id" ], 
+		"param_optional": [ "categories_max_updated_at" ]
+	},
+	{
+		"group": "api", 
+		"service": "customizable_categories", 
+		"version": "",
+		"method": "POST", 
+		"param_required": [ "customizable_categories" ], 
+		"param_optional": []
+	},
+	{
+		"group": "api", 
+		"service": "custom_fields", 
+		"version": "",
+		"method": "POST", 
+		"param_required": [ "project_id" ], 
+		"param_optional": []
+	},
+	{
+		"group": "api", 
+		"service": "document_references", 
+		"version": "",
+		"method": "POST", 
+		"param_required": [ "project_id", "document_reference" ], 
+		"param_optional": [ "thumb" ]
+	},
+	{
+		"group": "api", 
+		"service": "get_checklists", 
+		"version": "",
+		"method": "POST", 
+		"param_required": [ "project_id", "checklist_ids" ], 
+		"param_optional": [ "max_date", "forced_checklist_ids", "device_type", "application_version" ]
+	},
+	{
+		"group": "api", 
+		"service": "get_equipment", 
+		"version": "",
+		"method": "POST", 
+		"param_required": [ "project_id", "application_version" ], 
+		"param_optional": [ "step", "details", "equipment_ids", "filter_id", "limit", "offset", "max_date", "ids_only" ]
+	},
+	{
+		"group": "api", 
+		"service": "equipment", 
+		"version": "",
+		"method": "POST", 
+		"param_required": [ "project_id", "equipment" ], 
+		"param_optional": []
+	},
+	{
+		"group": "api", 
+		"service": "login", 
+		"version": "",
+		"method": "POST", 
+		"param_required": [], 
+		"param_optional": [ "device_type", "device_identifier" ]
+	},
+	{
+		"group": "api", 
+		"service": "logout", 
+		"version": "",
+		"method": "POST", 
+		"param_required": [], 
+		"param_optional": [ "project_id" ]
+	},
+	{
+		"group": "api", 
+		"service": "get_issues", 
+		"version": "",
+		"method": "POST", 
+		"param_required": [ "project_id" ], 
+		"param_optional": [ "area_ids", "count_only", "issue_filter_id" ]
+	},
+	{
+		"group": "api", 
+		"service": "get_photos", 
+		"version": "",
+		"method": "POST", 
+		"param_required": [ "project_id" ], 
+		"param_optional": []
+	},	
+	{
+		"group": "api", 
+		"service": "project", 
+		"version": "",
+		"method": "POST", 
+		"param_required": [ "project_id" ], 
+		"param_optional": []
+	},	
+	{
+		"group": "api", 
+		"service": "projects", 
+		"version": "",
+		"method": "POST", 
+		"param_required": [], 
+		"param_optional": []
+	},
+	{
+		"group": "api", 
+		"service": "get_tasks", 
+		"version": "",
+		"method": "POST", 
+		"param_required": [ "project_id" ], 
+		"param_optional": [ "max_date", "filter_id", "offset", "limit" ]
+	},
+	{
+		"group": "api", 
+		"service": "vela_fields", 
+		"version": "",
+		"method": "POST", 
+		"param_required": [ "project_id" ], 
+		"param_optional": []
+	},
+	{
+		"group": "api/library", 
+		"service": "all_files", 
+		"version": "",
+		"method": "POST", 
+		"param_required": [ "project_id" ], 
+		"param_optional": [ "directory" ]
+	},
+	{
+		"group": "api/library", 
+		"service": "all_folders", 
+		"version": "",
+		"method": "POST", 
+		"param_required": [ "project_id" ], 
+		"param_optional": []
+	},
+	{
+		"group": "api/library", 
+		"service": "file/{id}/{type}/{rev}/{page}", 
+		"version": "",
+		"method": "POST", 
+		"param_required": [ "project_id" ], 
+		"param_optional": [],
+		"param_urlSegment": [ "id", "rev", "page", "type" ] 
+	},
+	{
+		"group": "api/library", 
+		"service": "folders", 
+		"version": "",
+		"method": "GET", 
+		"param_required": [ "project_id" ], 
+		"param_optional": []
+	},
+	{
+		"group": "api/library", 
+		"service": "folder/add", 
+		"version": "",
+		"method": "POST", 
+		"param_required": [ "project_id", "path" ], 
+		"param_optional": []
+	},
+	{
+		"group": "api/library", 
+		"service": "folder/move", 
+		"version": "",
+		"method": "POST", 
+		"param_required": [ "project_id", "path", "new_path" ], 
+		"param_optional": []
+	},
+	{
+		"group": "api/library", 
+		"service": "folder/delete", 
+		"version": "",
+		"method": "POST", 
+		"param_required": [ "project_id", "path" ], 
+		"param_optional": []
+	},
+	{
+		"group": "fieldapi/admin", 
+		"service": "companies", 
+		"version": "v1",
+		"method": "POST", 
+		"param_required": [ "project_id" ], 
+		"param_optional": []
+	}, 
+	{
+		"group": "fieldapi/admin", 
+		"service": "locations", 
+		"version": "v1",
+		"method": "POST", 
+		"param_required": [ "project_id" ], 
+		"param_optional": []
+	}, 
+	{
+		"group": "fieldapi/admin", 
+		"service": "project_names", 
+		"version": "v1",
+		"method": "POST", 
+		"param_required": [], 
+		"param_optional": [ "sort_order", "sort_direction" ]
+	}, 
+	{
+		"group": "fieldapi/admin", 
+		"service": "users", 
+		"version": "v1",
+		"method": "POST", 
+		"param_required": [], 
+		"param_optional": [ "project_id" ]
+	}, 
+	{
+		"group": "fieldapi/checklists", 
+		"service": "", 
+		"version": "v1",
+		"method": "GET", 
+		"param_required": [ "project_id" ], 
+		"param_optional": [ "source_id", "limit", "offset" ]
+	},
+	{
+		"group": "fieldapi/checklists", 
+		"service": "{id}", 
+		"version": "v1",
+		"method": "GET", 
+		"param_required": [ "project_id" ], 
+		"param_optional": [],
+		"param_urlSegment": [ "id" ] 
+	},
+	{
+		"group": "fieldapi/companies", 
+		"service": "", 
+		"version": "v1",
+		"method": "GET", 
+		"param_required": [], 
+		"param_optional": [ "no_http_status", "project_id" ],
+		"param_urlSegment": [] 
+	},
+	{
+		"group": "fieldapi/companies", 
+		"service": "", 
+		"version": "v1",
+		"method": "POST", 
+		"param_required": [ "company" ], 
+		"param_optional": [ "no_http_status" ],
+		"param_urlSegment": [] 
+	},
+	{
+		"group": "fieldapi/companies", 
+		"service": "{id}", 
+		"version": "v1",
+		"method": "GET", 
+		"param_required": [], 
+		"param_optional": [ "no_http_status" ],
+		"param_urlSegment": [ "id" ] 
+	},
+	{
+		"group": "fieldapi/issues", 
+		"service": "fields", 
+		"version": "v1",
+		"method": "POST", 
+		"param_required": [ "project_id" ], 
+		"param_optional": []
+	},
+	{
+		"group": "fieldapi/issues", 
+		"service": "create_type", 
+		"version": "v1",
+		"method": "POST", 
+		"param_required": [ "project_id" ], 
+		"param_optional": [ "category_name", "name" ]
+	},
+	{
+		"group": "fieldapi/issues", 
+		"service": "list", 
+		"version": "v1",
+		"method": "GET", 
+		"param_required": [ "project_id" ], 
+		"param_optional": [ "area_id", "offset", "limit"]
+	},
+	{
+		"group": "fieldapi/issues", 
+		"service": "retrieve", 
+		"version": "v1",
+		"method": "POST", 
+		"param_required": [ "project_id", "ids" ], 
+		"param_optional": []
+	},
+	{
+		"group": "fieldapi/issues", 
+		"service": "search", 
+		"version": "v1",
+		"method": "POST", 
+		"param_required": [ "project_id" ], 
+		"param_optional": [ "filter_id", "conditions", "offset", "limit", "source_id", "source_type" ]
+	},
+	{
+		"group": "fieldapi/issues", 
+		"service": "comment", 
+		"version": "v1",
+		"method": "POST", 
+		"param_required": [ "project_id", "id", "comment" ], 
+		"param_optional": [ "author" ]
+	}
+]

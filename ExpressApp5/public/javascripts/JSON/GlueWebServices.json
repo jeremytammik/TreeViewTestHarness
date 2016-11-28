@@ -1,0 +1,219 @@
+﻿
+[
+	{
+		"group": "security", 
+		"service": "login", 
+		"version": "v1",
+		"method": "POST", 
+		"param_required": [], 
+		"param_optional": []
+	}, 
+	{
+		"group": "security", 
+		"service": "logout", 
+		"version": "v1",
+		"method": "POST", 
+		"param_required": [], 
+		"param_optional": []
+	}, 
+	{
+		"group": "security", 
+		"service": "invite", 
+		"version": "v1",
+		"method": "POST", 
+		"param_required": [ "email" ], 
+		"param_optional": [ "project_ids", "user_type", "send_email", "message", "company_guid" ]
+	}, 
+	{
+		"group": "security", 
+		"service": "invite_repeat", 
+		"version": "v1",
+		"method": "POST", 
+		"param_required": [ "proxy_user_id" ], 
+		"param_optional": [ "project_ids", "send_email", "email", "message", "company_guid" ]
+	}, 
+	{
+		"group": "project", 
+		"service": "list", 
+		"version": "v1", 
+		"method": "GET", 
+		"param_required": [], 
+		"param_optional": [ "sterm", "user_id", "login_name" ]
+	}, 
+	{
+		"group": "project", 
+		"service": "info", 
+		"version": "v1", 
+		"method": "GET", 
+		"param_required": [ "project_id" ], 
+		"param_optional": [ "depth", "lightweight" ]
+	}, 
+	{
+		"group": "project", 
+		"service": "tree", 
+		"version": "v1", 
+		"method": "GET", 
+		"param_required": [ "project_id" ], 
+		"param_optional": [ "folder_id", "depth", "lightweight", "get_folder_structure", "get_basic_info_only" ]
+	}, 
+	{
+		"group": "project", 
+		"service": "user/add", 
+		"version": "v1", 
+		"method": "POST", 
+		"param_required": [ "project_id" ], 
+		"param_optional": [ "user_id", "login_name", "send_email" ]
+	}, 
+	{
+		"group": "model", 
+		"service": "list", 
+		"version": "v1", 
+		"method": "GET", 
+		"param_required": [ "project_id" ], 
+		"param_optional": [ "exclude_folder", "exclude_deleted", "sort", "recent4", "model_type" ]
+	}, 
+	{
+		"group": "model", 
+		"service": "info", 
+		"version": "v2", 
+		"method": "GET", 
+		"param_required": [ "model_id" ], 
+		"param_optional": [ "version_id" ]
+	}, 
+	{
+		"group": "model", 
+		"service": "clash_test_results", 
+		"version": "v1", 
+		"method": "GET", 
+		"param_required": [ "clash_test_version_id" ], 
+		"param_optional": []
+	}, 
+	{
+		"group": "model", 
+		"service": "markup_create", 
+		"version": "v1", 
+		"method": "POST", 
+		"param_required": [ "model_id", "markup_object", "markup_group_id" ], 
+		"param_optional": [ "version_id", "markup_name", "view_id", "markup_folder_id", "view_object", "text_content", "xyz_position", "hidden_set", "transparent_set", "color_object_set", "selection_set", "clip_plane_set" ]
+	}, 
+	{
+		"group": "model", 
+		"service": "markup_delete", 
+		"version": "v1", 
+		"method": "POST", 
+		"param_required": [ "model_id", "markup_ids" ], 
+		"param_optional": []
+	}, 
+		{
+		"group": "model", 
+		"service": "markups", 
+		"version": "v2", 
+		"method": "GET", 
+		"param_required": [ "model_id" ], 
+		"param_optional": []
+	}, 
+	{
+		"group": "model", 
+		"service": "publish", 
+		"version": "v1", 
+		"method": "GET", 
+		"param_required": [ "model_id" ], 
+		"param_optional": [ "version_id", "unpublish" ]
+	}, 
+	{
+		"group": "model", 
+		"service": "set_objects", 
+		"version": "v1", 
+		"method": "GET", 
+		"param_required": [ "set_id", "model_id" ], 
+		"param_optional": [ "version_id", "stream_compression" ]
+	}, 
+	{
+		"group": "model", 
+		"service": "sets", 
+		"version": "v1", 
+		"method": "GET", 
+		"param_required": [ "model_id" ], 
+		"param_optional": [ "version_id" ]
+	}, 
+	{
+		"group": "model", 
+		"service": "view_create", 
+		"version": "v1", 
+		"method": "POST", 
+		"param_required": [ "model_id" ], 
+		"param_optional": [ "version_id", "view_object", "view_id", "view_name", "is_global", "is_folder", "view_display_mode", "parent_id", "hidden_set", "transparent_set", "color_object_set", "selection_set", "clip_pane_set", "pretty", "no_http_status" ]
+	}, 
+	{
+		"group": "model", 
+		"service": "view_tree", 
+		"version": "v2", 
+		"method": "GET", 
+		"param_required": [ "model_id" ], 
+		"param_optional": [ "version_id", "lightweight", "include_markups_for_lightweight", "get_cached_updated_views", "pretty", "no_http_status" ]
+	}, 
+	{
+		"group": "user", 
+		"service": "company_roster", 
+		"version": "v1", 
+		"method": "GET", 
+		"param_required": [], 
+		"param_optional": [ "sterm", "user_type", "page", "page_size", "include_deleted_users", "company_guid" ]
+	}, 
+	{
+		"group": "user", 
+		"service": "info", 
+		"version": "v1", 
+		"method": "GET", 
+		"param_required": [], 
+		"param_optional": [ "user_id", "login_name", "pretty", "no_http_status" ]
+	}, 
+	{
+		"group": "action", 
+		"service": "info", 
+		"version": "v1", 
+		"method": "GET", 
+		"param_required": [ "action_id" ], 
+		"param_optional": [ "pretty", "no_http_status" ]
+	}, 
+	{
+		"group": "action", 
+		"service": "search", 
+		"version": "v1", 
+		"method": "GET", 
+		"param_required": [], 
+		"param_optional": [ "project_id", "model_id", "user_id", "login_name", "type", "subject", "created_after", "page", "page_size", "pretty", "no_http_status" ]
+	}, 
+	{
+		"group": "points", 
+		"service": "points", 
+		"version": "v1", 
+		"method": "GET", 
+		"param_required": [ "model_id"], 
+		"param_optional": [ "created_after", "filter" ]
+	}, 
+	{
+		"group": "analytics", 
+		"service": "metric", 
+		"version": "v1", 
+		"method": "GET", 
+		"param_required": [], 
+		"param_optional": [ "metric", "metric_company", "scope", "start_date", "end_date" ]
+	}, 
+	{
+		"group": "analytics", 
+		"service": "project", 
+		"version": "v1", 
+		"method": "GET", 
+		"param_required": [ "metrics" ], 
+		"param_optional": [ "metric_company", "start_date", "end_date" ]
+	},
+		{
+		"group": "analytics", 
+		"service": "tenant", 
+		"version": "v1", 
+		"method": "GET", 
+		"param_required": [], 
+		"param_optional": [ "metric_company" ]
+	}
+]

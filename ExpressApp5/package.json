@@ -1,0 +1,19 @@
+{
+  "name": "ExpressApp5",
+  "version": "0.0.0",
+  "description": "ExpressApp5",
+  "main": "app.js",
+  "author": {
+    "name": "haradam",
+    "email": ""
+  },
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "3.4.4",
+    "jade": "*",
+    "passport": "^0.3.2",
+    "passport-oauth2": "^1.3.0",
+    "request": "^2.75.0",
+    "stylus": "*"
+  }
+}

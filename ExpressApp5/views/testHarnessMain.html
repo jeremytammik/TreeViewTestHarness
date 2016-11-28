@@ -1,0 +1,683 @@
+﻿<!DOCTYPE html> 
+<html>
+    <head>
+        <title>Test Harness</title>
+        <!-- added for viewer -->
+        <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=no" />
+        <meta charset="utf-8" />
+        <!-- jQuery for later use -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+        <!-- The Viewer CSS -->
+        <!--<link rel="stylesheet" href="https://developer.api.autodesk.com/viewingservice/v1/viewers/style.min.css?v=2.10.*" type="text/css">
+        <link rel="stylesheet" href="https://developer.api.autodesk.com/viewingservice/v1/viewers/A360.css?v=2.10.*" type="text/css">-->
+        <!-- The Viewer JS -->
+        <!--<script src="https://developer.api.autodesk.com/viewingservice/v1/viewers/three.min.js?v=2.10.*"></script>
+        <script src="https://developer.api.autodesk.com/viewingservice/v1/viewers/viewer3D.min.js?v=2.10.*"></script>
+        <script src="https://developer.api.autodesk.com/viewingservice/v1/viewers/Autodesk360App.js?v=2.10.*"></script>-->
+
+        <!-- The Viewer CSS -->
+        <link rel="stylesheet" href="https://developer.api.autodesk.com/viewingservice/v1/viewers/style.min.css" type="text/css">
+        <!--<link rel="stylesheet" href="https://developer.api.autodesk.com/viewingservice/v1/viewers/A360.css" type="text/css">-->
+        <!-- The Viewer JS -->
+        <!--<script src="https://developer.api.autodesk.com/viewingservice/v1/viewers/three.min.js"></script>
+        <script src="https://developer.api.autodesk.com/viewingservice/v1/viewers/viewer3D.min.js"></script>
+        <script src="https://developer.api.autodesk.com/viewingservice/v1/viewers/Autodesk360App.js"></script>-->
+
+        <!-- Tree view utils -->
+        <link rel="stylesheet" href="/javascripts/Packages/inspire-tree-master/dist/inspire-tree.css" type="text/css"/>
+        <script src="/javascripts/Packages/inspire-tree-master/dist/inspire-tree-bundled.min.js"></script>
+        <script src="/javascripts/Utils/JsonToTreeViewUtils.js"></script>
+        <!--<script src="/javascripts/MHTest/JsonTestData.js"></script>-->
+        <!-- Web services end point utils -->
+        <script src="/javascripts/Packages/linq.js_ver2.2.0.2/linq.js"></script>
+        <script src="/javascripts/Utils/WebServiceBaseUtils.js"></script>
+        <script>
+            //var g_fieldWebServicesJsonPath = "https://raw.githubusercontent.com/haradam3/hello-world2/master/FieldWebServices.json";
+            //var g_glueWebServicesJsonPath = "https://raw.githubusercontent.com/haradam3/hello-world2/master/GlueWebServices.json";
+            //var g_forgeWebServicesJsonPath = "https://raw.githubusercontent.com/haradam3/hello-world2/master/ForgeWebServices.json";
+
+            var g_fieldWebServicesJsonPath = "/javascripts/JSON/FieldWebServices.json";
+            var g_glueWebServicesJsonPath = "/javascripts/JSON/GlueWebServices.json";
+            var g_forgeWebServicesJsonPath = "/javascripts/JSON/ForgeWebServices.json";
+        </script>
+        <!-- client side code separated for readability -->
+        <script src="/javascripts/TestHarness/glueClient.js"></script>
+        <script src="/javascripts/TestHarness/fieldClient.js"></script>
+        <script src="/javascripts/TestHarness/forgeClient.js"></script>
+
+        <!-- Table view utils -->
+        <script src="/javascripts/Utils/TableViewUtils.js"></script>
+        <!-- Test harness styles -->
+        <link rel="stylesheet" href="/stylesheets/TestHarness.css" type="text/css" />
+
+        <!-- Script for setting up list of web services -->
+        <script>            
+            // Constant. Choice among Field/Glue/Forge
+            //var m_webServiceType = "Field";
+            //var webServiceJsonPath = g_fieldWebServicesJsonPath;
+            //var m_webServiceType = "Glue"; // Field/Glue/Forge
+            //var webServiceJsonPath = g_glueWebServicesJsonPath;
+            var m_webServiceType = "Forge"; // Field/Glue/Forge
+            var webServiceJsonPath = g_forgeWebServicesJsonPath;
+
+            // Global variables 
+            // serviceList represents a collection of available web services.
+            var m_webServiceList;
+            var m_curService;
+            var m_tableView; 
+
+            $(document).ready(function () {
+                loadServiceList(webServiceJsonPath);
+
+                m_tableView = new TableView("paramTable");
+
+                //// getToken; 
+                //console.log('1 tokenSuccess=' + sessionStorage.tokenSuccess);
+
+                //if (sessionStorage.tokenSuccess) {
+                //    console.log('2 tokenSuccess=' + sessionStorage.tokenSuccess); 
+                //}
+                //else {
+                //    console.log('3 tokenSuccess=false');
+                //}
+            });
+
+            // Ajax call to get Json string from the server. 
+            function loadServiceList(webServicesJsonPath) {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // string to Json 
+                        var serviceListJson = JSON.parse(this.response);
+                        // Initialize the web service list 
+                        initServiceList(serviceListJson); 
+                    }
+                }
+                xhttp.open("GET", webServicesJsonPath, true);
+                xhttp.send();
+            };
+
+            // Initialize service selection menus from the Json string. 
+            function initServiceList(serviceListJson) {
+                // Set up web service list for gloabl use. 
+                m_webServiceList = new WebServiceList(serviceListJson);
+
+                var webServiceList = m_webServiceList;
+
+                // Set service group selection 
+                var opts = webServiceList.getGroupOptionList(); 
+                $("#selectGroup").html(opts); 
+
+                // Pick the first web service definition
+                var srv = webServiceList.first();
+
+                // Set service resource selection 
+                var groupName = srv.group; 
+                opts = webServiceList.getServiceOptionList(groupName);
+                $("#selectResource").html(opts);
+
+                // Get the current resource selection. 
+                var serviceName = $("#selectResource").val();
+
+                // Update the resource selection
+                updateServiceSelection(groupName, serviceName);
+            };
+
+            function selectGroupChanged(event) {
+                var groupName = event.target.value;
+
+                // Update the selection list for resource.
+                var opts = m_webServiceList.getServiceOptionList(groupName);
+                $("#selectResource").html(opts);
+
+                // Update the resource selection. 
+                var serviceName = $("#selectResource").val();
+
+                // Update the resource selection
+                updateServiceSelection(groupName, serviceName);
+
+            };
+
+            function selectResourceChanged(event) {
+                var serviceName = event.target.value;
+
+                // get group name
+                var groupName = $("#selectGroup").val();
+
+                // Update the resource selection
+                updateServiceSelection(groupName, serviceName);
+
+            };
+
+            function updateServiceSelection(groupName, serviceName) {
+                // Update the current resource selection. 
+                var curService = m_webServiceList.getService(groupName, serviceName);
+                m_curService = new WebServiceBase(curService);
+
+                // Update the label
+                var resourceLabelString = m_curService.getResourceLabelString();
+                $("#labelResource").html(resourceLabelString);
+
+                // Set up parameter table 
+                m_tableView.initFontColor("Gray");
+                m_tableView.addParamListToTable(curService.param_required, "DarkOrchid");
+                m_tableView.addParamListToTable(curService.param_optional, "Black");
+                m_tableView.addParamListToTable(curService.param_urlSegment, "DarkOrange");
+            }
+
+            function buttonRunClicked() { 
+                clearRequestResponse(); 
+
+                var resource = m_curService.getFullResourceString();
+                
+                switch (resource) {
+                    case "security/v1/login": // Glue
+                        MakeRestCallLoginGlue(); 
+                        return;
+                    case "api/login": // Field 
+                        MakeRestCallLoginField();
+                        return;
+                    default:
+                        break; 
+                }
+                makeRestCallGeneric(); 
+            }
+        </script>
+   
+        <!-- Script for authentication -->
+        <script>
+            function buttonLoginClicked() {
+                clearRequestResponse();
+
+                var form1 = document.getElementById("logform");
+                var userid = form1.elements[0].value;
+                //var pswd = form1.elements[1].value; 
+                var pswd = document.getElementById("pswd").value;
+
+                //var form1 = $("#logform").value; 
+                //var userid = form1[0].value;
+                //var pswd = form2[1].value; 
+
+                if (m_webServiceType == "Field") {
+                    fieldLogin_v52(userid, pswd);
+                }
+                else if (m_webServiceType == "Glue") {
+                    //MakeRestCallLoginGlue(userid, pswd); 
+                    glueLogin(userid, pswd); 
+                }
+                else { // must be Forge. Need to use token.  
+                    alert('Forge uses OAuth.')
+                }
+            }
+
+            // 2-legged for HQ and Docs 
+            // 
+            function buttonToken2legClicked() {
+                clearRequestResponse();
+
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // Received response. 
+                        console.log("POST /token2leg response: " + this.response + "\n this status: " + this.status);
+                        displayResponse(this.response)
+                        // We also want to keep the token in the token text box
+                        var jsonObj = JSON.parse(this.response);
+                        $("#token2leg").val(jsonObj.access_token);
+                    }
+                }
+
+                xhttp.open("POST", "/token2leg", true);
+                xhttp.send();
+                console.log("POST /token2leg send"); 
+            }
+
+            // retrieve the token currently saved at server side.
+            // 
+            function buttonToken3legGetClicked() {
+                console.log("buttonToken3legGetClicked(): ");
+                clearRequestResponse();
+
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // Received response. 
+                        console.log("GET /token3leg response: " + this.response + "\n this status: " + this.status);
+                        displayResponse(this.response);
+                        // We also want to keep the token in the token text box
+                        var jsonObj = JSON.parse(this.response);
+                        $("#token3leg").val(jsonObj.access_token);
+                    }
+                }
+
+                xhttp.open("GET", "/token3leg", true);
+                xhttp.send();
+                console.log("GET /token3leg send");
+            }
+
+            function getSavedToken() {
+                console.log("getSavedToken(): ");
+
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // Received response. 
+                        console.log("GET /token3leg response: " + this.response + "\n this status: " + this.status);
+                        //displayResponse(this.response);
+                        // We also want to keep the token in the token text box
+                        var jsonObj = JSON.parse(this.response);
+                        $("#viewerToken").val(jsonObj.access_token);
+                    }
+                }
+
+                xhttp.open("GET", "/token3leg", true);
+                xhttp.send();
+                console.log("GET /token3leg send");
+            }
+
+            // Manually setting a token for testing purpose
+            // 
+            function buttonToken3legSetClicked() {
+                console.log("buttonToken3legSetClicked(): ");
+                clearRequestResponse();
+
+                // Set the given token.  
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // Received response. 
+                        console.log("POST /token3leg response: " + this.response + "\n this status: " + this.status);
+                        displayResponse(this.response); 
+                    }
+                }
+
+                var token3leg = $("#token3leg").val();
+                var data = { access_token: token3leg };
+
+                xhttp.open("POST", "/token3leg", true);
+                xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                xhttp.send(JSON.stringify(data));
+                console.log("POST /token3leg send");
+            }
+
+            function textAreaResponseChanged() {
+                var dataJson = $("#textAreaResponse").value;
+                $("#treeView").data = dataJson; 
+            }
+
+        </script>
+
+        <!-- Script for request & response area -->
+        <script>
+            function clearRequestResponse() {
+                $("#textAreaRequest").html("request area...");
+                $("#textAreaResponse").html("response area...");
+                clearTreeView();
+            }
+
+            function displayResponse(response) {
+                // Update the response areas
+                $("#textAreaResponse").html(response);
+                // Reload the tree view
+                var data = JsonToTreeViewData(response);
+                response = null; // MH Test performance. 
+                showTreeView(data);
+            }
+        </script>
+
+        <!-- Script for run -->
+        <script>
+            //==============================================================
+            //  Run 
+            //==============================================================
+            function makeRestCallGeneric() {
+                //fieldLogin_v5("mikako.harada@autodesk.com", "password"); 
+                //field_adminProject();
+                var service = m_curService.service; 
+                var method = service.method;
+                var resource = m_curService.getFullResourceString();
+
+                var param_required = m_tableView.tableViewToParamList(service.param_required);
+                var param_optional = m_tableView.tableViewToParamList(service.param_optional);
+                var param_urlSegment = m_tableView.tableViewToParamList(service.param_urlSegment);
+
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // Received response. 
+                        //console.log("POST run, response: " + this.response + "\n this status: " + this.status);
+                        console.log("POST run, status: " + this.status);
+                        displayResponse(this.response);
+                        this.response = null; 
+                    }
+                }
+                var data = {
+                    method: method,
+                    resource: resource,
+                    param_required: param_required,
+                    param_optional: param_optional,
+                    param_urlSegment: param_urlSegment
+                };
+
+                var url = "/runforge"; 
+                if (m_webServiceType == "Field") {
+                    url = "/runfield"; 
+                }
+                else if (m_webServiceType == "Glue") {
+                    url = "/runglue"
+                }
+
+                //xhttp.open("POST", "/run", true);
+                xhttp.open("POST", url, true);
+                xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                xhttp.send(JSON.stringify(data));
+
+                console.log("POST /run, sent");
+            }
+            ////==========================================================
+
+            //function tableCellCopyClicked(cell) {
+            //    var cellIndex = cell.cellIndex;
+            //    var rowIndex = cell.parentNode.rowIndex;
+
+            //    console.log("tableCellCopyClicked: cellIndex=" + cellIndex + " rowIndex=" + rowIndex);
+
+            //    // want to copy to col=2 
+            //    var toRow = rowIndex;
+            //    var toCol = 2;
+            //    //var val = "my val";
+            //    var val1 = currentSelection.value; 
+            //    var tr = cell.parentNode;
+            //    tr.cells[2].textContent = val1; 
+            //}
+
+        </script>
+
+        <!-- Script for parameter table -->
+        <script>
+            function tableCellCopyClicked(cell) {
+                var valueToCopy = currentSelection.value; // selection in the tree viewer. 
+
+                // For debugging. 
+                //var cellIndex = cell.cellIndex;
+                //var rowIndex = cell.parentNode.rowIndex;
+                //console.log("tableCellCopyClicked: cellIndex=" + cellIndex + " rowIndex=" + rowIndex);
+
+                var tr = cell.parentNode;
+                tr.cells[2].textContent = valueToCopy;
+            }
+        </script>
+
+        <!-- Script for viewer -->
+        <script>
+
+            // Returns a valid access token. For our getting started project,
+            // we simply return the value of token text box.
+            // This will be called from options in initializer:
+            // Autodesk.Viewing.Initializer() >>
+            // Autodesk.Viewing.Private.initializeAuth() >>
+            // accessToken = options.getAccessToken();
+
+            function get2LegToken() {
+                var authToken2 = document.getElementById("token2leg").value;
+                return authToken2;
+            }
+
+            function get3LegToken() {
+                var authToken3 = document.getElementById("token3leg").value;
+                return authToken3;
+            }
+
+        </script>
+
+    </head>
+
+    <body>
+        <!-- login HTML -------------------------------------------->
+        <div class="groupLogin">
+            <!--<form action="/login" method="post"-->
+            <form id="logform">
+                <label for="userid" class="label-login"> User name: </label>
+                <input id="userid" type="text" name="userid" />   
+                &nbsp;
+                <label for="token2leg" class="label-token"> Token 2-leg: </label>
+                <input id="token2leg" type="text" name="token2leg" /> &nbsp; 
+                <button type="button" onclick="buttonToken2legClicked()">Get Token</button> 
+                &nbsp; 
+                <!--<div class="service-selection-box">-->
+                    <!--<select>
+                        <option value="Forge">Forge</option>
+                        <option value="Glue">Glue</option>
+                        <option value="Field">Field</option>
+                    </select>-->
+                <!--/div>-->
+
+                <!--<button type="button" onclick="buttonLoginClicked()">Login</button>-->
+                <br />
+                <label for="pswd" class="label-login">Password: </label>
+                <input id="pswd" type="password" name="pswd"/>
+                &nbsp;
+                <label for="token3leg" class="label-token"> Token 3-leg: </label>
+                <input id="token3leg" type="text" name="token3leg" /> &nbsp;
+                <!--<button type="button" onclick="buttonToken3legClicked()">Get Token</button>-->
+                <button type="button" onclick="location.href='/auth'">Request Token</button>
+                <button type="button" onclick="buttonToken3legGetClicked()">Get</button>
+                <button type="button" onclick="buttonToken3legSetClicked()">Set</button>
+
+                <!--<input type="submit" value="Login"/>-->
+                <br />
+                <button type="button" onclick="buttonLoginClicked()">Login</button> 
+
+                <!--<input type="radio" name="serviceType" value="Field" /> Field
+                <input type="radio" name="serviceType" value="Glue" /> Glue &nbsp;
+                <input type="radio" name="serviceType" value="Forge" checked /> Forge--> 
+
+            </form>
+
+            <!--<select>
+                <option value="Forge">Forge</option>
+                <option value="Glue">Glue</option>
+                <option value="Field">Field</option>
+            </select>-->
+
+        </div>
+
+        <!-- Request/Response text boxes -->
+        <div class="group2">
+            <!--<form>-->
+            Request:<br />
+            <textarea id="textAreaRequest" name="textAreaRequest" rows="5" cols="50"></textarea>
+            Response:<br />
+            <textarea id="textAreaResponse" onchange="textAreaResponseChanged()" name="textAreaResponse" rows="10" cols="50"></textarea>
+            <!--/form -->
+        </div>
+       
+        <!-- Service selection boxes -->
+        <div class="group2">
+
+            <!--<div class="service-selection-box">
+            <select>
+                <option value="Forge">Forge</option>
+                <option value="Glue">Glue</option>
+                <option value="Field">Field</option>
+            </select>
+        </div>-->
+
+            <div id="groupTest" class="service-selection-box">
+                <select id="selectGroup" onchange="selectGroupChanged(event)" style="width:300px"></select>
+            </div>
+            <div id="resourceTest" class="service-selection-box">
+                <select id="selectResource" onchange="selectResourceChanged(event)" style="width:300px"></select>
+            </div>
+            <div id="labelResource" class="service-selection-label-box">&lt; resource &gt;</div>
+            <div>
+                <button type="button" onclick="buttonRunClicked()">Run</button>
+            </div>
+        </div> 
+
+        <!-- Tree view to show response ------------------------------>
+        <!--<div class="tree left inspire-tree" tabindex="-1"></div>-->
+        <div class="group3" style="overflow:auto">
+            <div class="group33" style="width:600px; height:400px">
+                Tree View: &nbsp;
+                <button type="button" onclick="buttonTreeClearClicked()">Clear</button> &nbsp;
+
+                <input id="treeSearch" type="text" name="treeSearch" placeholder="Search" />
+                <button type="button" onclick="buttonTreeSearchClicked()">Search</button>
+
+                <button id="treeOff" type="button" onclick="buttonTreeOffClicked()">Off</button>
+
+                <div id="treeView" class="tree"></div>
+            </div> 
+        </div>
+
+        <!-- Table view to list parameters --------------------------->
+
+        <div class="group3" style="overflow:auto">
+            Parameters: 
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Name</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody id="paramTable">
+
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Model viewer HTML -->
+        <div class="groupViewer" style="overflow:auto">
+            <!-- Document urn input field -->            
+            <button type="button" onclick="buttonUrnCopyClicked()">&gt;</button> 
+            <label for="urn" class="label-urn"> urn: </label>
+            <input id="urn" type="text" name="urn" placeholder="urn"/> &nbsp;
+
+            <!-- Token input field -->
+            <button type="button" onclick="buttonViewerTokenCopyClicked()">&gt;</button>
+            <label for="viewerToken" class="label-viewerToken"> Token: </label>
+            <input id="viewerToken" type="text" name="viewerToken" placeholder="Token"/> &nbsp;
+
+            <!-- View button -->
+            <button type="button" onclick="buttonViewClicked()">View</button> &nbsp;
+            
+            <!-- Focus on an object -->
+            <!--<p></p>-->
+            <button type="button" onclick="buttonObjectIdCopyClicked()">&gt;</button>
+            <!--<label for="viewerFocus" class="label-viewerFocus">Object ID: </label>-->
+            <input id="viewerFocus" type="text" name="viewerFocus" placeholder="Object/node ID" />
+            <button type="button" onclick="buttonFocusClicked()">Focus</button>
+
+            <!-- Forge Viewer comes here -->
+            <div id="MyViewerDiv"></div>
+        </div>
+
+        <!-- Tree view for response JS ----------------------------->
+        <script>
+            var tree = null;
+            var currentSelection = null;
+            var treeOff = false; 
+
+            function showTreeView(data) {
+                if (treeOff) return; 
+
+                clearTreeView();
+
+                tree = new InspireTree({
+                    target: '.tree',
+                    showCheckboxes: true,
+                    data: []
+                });
+
+                tree.load(data);
+                tree.expand(); // expand the first level 
+
+                tree.on('node.selected', function (node) {
+                    currentSelection = node;
+                    console.log("tree node.selected: text=" + node.text + " key=" + node.key + " value=" + node.value);
+                });
+            }
+
+            // clear everything each time improves performance. 
+            function clearTreeView() {
+                currentSelection = null;
+                $('#treeView').empty();
+                tree = null;
+            }
+
+            // turn on/off tree view. (when you are getting massive data). 
+            function buttonTreeClearClicked() {
+                clearTreeView(); 
+            }
+
+            function buttonTreeSearchClicked() {
+                var wordToSearch = $('#treeSearch').val();
+                tree.search(wordToSearch);
+            }
+
+            function buttonTreeOffClicked() {
+                if (treeOff) {
+                    var treeOff = false;
+                    $('#treeOff').html("Off");
+                }
+                else {
+                    var treeOff = true;
+                    $('#treeOff').html("On");
+                }
+            }
+
+        </script>
+
+        <!-- Forge Viewer JS -->
+        <script src="https://developer.api.autodesk.com/viewingservice/v1/viewers/three.min.js"></script>
+        <script src="https://developer.api.autodesk.com/viewingservice/v1/viewers/viewer3D.min.js"></script>
+        <!-- Developer JS (my js) -->
+        <script src="/javascripts/Viewer/viewerBasic.js"></script>
+        <script>
+            // copy tree node to text box 
+            function buttonUrnCopyClicked() {
+                var val = currentSelection.value;
+                $('#urn').val(val); 
+            }
+
+            // copy 3-leg token from the text box. 
+            //function buttonViewerTokenCopyClicked() {
+            //    var token = $('#token3leg').val();
+            //    $('#viewerToken').val(token); 
+            //}
+            function buttonViewerTokenCopyClicked() {
+                //var token = $('#token3leg').val();
+                // get the token we are using on the server
+                var token = getSavedToken(); 
+                $('#viewerToken').val(token);
+            }
+
+            function buttonViewClicked() {
+                var token = $('#viewerToken').val();
+                var urn = $('#urn').val();
+                viewByTokenAndUrn(token, urn);
+            }
+
+            // copy object/node id to the text box 
+            function buttonObjectIdCopyClicked() {
+                var val = currentSelection.value;
+                $('#viewerFocus').val(val);
+            }
+
+            function buttonFocusClicked() {
+                // focus on an element
+                // e.g., Roof is id=2210 
+                var val = $('#viewerFocus').val();
+                var id = Number(val);
+                viewer.isolate(id);
+                viewer.fitToView(id);
+            }
+        </script> 
+
+    </body>
+
+</html>

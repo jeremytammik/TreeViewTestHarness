@@ -1,0 +1,455 @@
+﻿[
+  {
+    "group": "project",
+    "service": "health",
+    "version": "v1",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ "detailed" ]
+  },
+  {
+    "group": "project",
+    "service": "hubs",
+    "version": "v1",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ "filter[id]", "filter[attributes.name]", "filter[attributes.extension.type]" ]
+  },
+  {
+    "group": "project",
+    "service": "hubs/{hub_id}",
+    "version": "v1",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ ],
+    "param_urlSegment": [ "hub_id" ]
+  },
+  {
+    "group": "project",
+    "service": "hubs/{hub_id}/projects",
+    "version": "v1",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ ],
+    "param_urlSegment": [ "hub_id" ]
+  },
+  {
+    "group": "project",
+    "service": "hubs/{hub_id}/projects/{project_id}",
+    "version": "v1",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ ],
+    "param_urlSegment": [ "hub_id", "project_id" ]
+  },
+  {
+    "group": "project",
+    "service": "hubs/{hub_id}/projects/{project_id}/rootFolder",
+    "version": "v1",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ ],
+    "param_urlSegment": [ "hub_id", "project_id" ]
+  },
+  {
+    "group": "data",
+    "service": "health?",
+    "version": "v1",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ "detailed" ],
+    "param_urlSegment": [ ]
+  },
+  {
+    "group": "data",
+    "service": "projects/{project_id}/folders/{folder_id}",
+    "version": "v1",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ ],
+    "param_urlSegment": [ "project_id", "folder_id" ]
+  },
+  {
+    "group": "data",
+    "service": "projects/{project_id}/folders/{folder_id}/parent",
+    "version": "v1",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ ],
+    "param_urlSegment": [ "project_id", "folder_id" ]
+  },
+  {
+    "group": "data",
+    "service": "projects/{project_id}/folders/{folder_id}/contents",
+    "version": "v1",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ "filter[type]", "filter[id]", "filter[attributes.extension.type]" ],
+    "param_urlSegment": [ "project_id", "folder_id" ]
+  },
+  {
+    "group": "data",
+    "service": "projects/{project_id}/folders/{folder_id}/refs",
+    "version": "v1",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ "filter[type]", "filter[id]", "filter[meta.refType]", "filter[meta.direction]", "filter[meta.extension.type]" ],
+    "param_urlSegment": [ "project_id", "folder_id" ]
+  },
+  {
+    "group": "data",
+    "service": "projects/{project_id}/folders/{folder_id}/relationships/refs",
+    "version": "v1",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ "filter[type]", "filter[id]", "filter[meta.refType]", "filter[meta.direction]", "filter[meta.extension.type]" ],
+    "param_urlSegment": [ "project_id", "folder_id" ]
+  },
+  {
+    "group": "data",
+    "service": "projects/{project_id}/folders/{folder_id}/relationships/links",
+    "version": "v1",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ "filter[type]", "filter[id]", "filter[meta.extension.type]" ],
+    "param_urlSegment": [ "project_id", "folder_id" ]
+  },
+  {
+    "group": "data",
+    "service": "projects/{project_id}/items/{item_id}",
+    "version": "v1",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ "filter[type]", "filter[id]", "filter[meta.extension.type]" ],
+    "param_urlSegment": [ "project_id", "item_id" ]
+  },
+  {
+    "group": "data",
+    "service": "projects/{project_id}/items/{item_id}/parent",
+    "version": "v1",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ "filter[type]", "filter[id]", "filter[meta.extension.type]" ],
+    "param_urlSegment": [ "project_id", "item_id" ]
+  },
+  {
+    "group": "data",
+    "service": "projects/{project_id}/items/{item_id}/refs",
+    "version": "v1",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ "filter[type]", "filter[id]", "filter[meta.refType]", "filter[meta.direction]", "filter[meta.extension.type]" ],
+    "param_urlSegment": [ "project_id", "item_id" ]
+  },
+  {
+    "group": "data",
+    "service": "projects/{project_id}/items/{item_id}/relationships/refs",
+    "version": "v1",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ "filter[type]", "filter[id]", "filter[meta.refType]", "filter[meta.direction]", "filter[meta.extension.type]" ],
+    "param_urlSegment": [ "project_id", "item_id" ]
+  },
+  {
+    "group": "data",
+    "service": "projects/{project_id}/items/{item_id}/relationships/links",
+    "version": "v1",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ "filter[type]", "filter[id]", "filter[meta.extension.type]" ],
+    "param_urlSegment": [ "project_id", "item_id" ]
+  },
+  {
+    "group": "data",
+    "service": "projects/{project_id}/items/{item_id}/tip",
+    "version": "v1",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ ],
+    "param_urlSegment": [ "project_id", "item_id" ]
+  },
+  {
+    "group": "data",
+    "service": "projects/{project_id}/items/{item_id}/versions",
+    "version": "v1",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ "filter[attributes.version]" ],
+    "param_urlSegment": [ "project_id", "item_id" ]
+  },
+  {
+    "group": "data",
+    "service": "projects/{project_id}/versions/{version_id}",
+    "version": "v1",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ ],
+    "param_urlSegment": [ "project_id", "version_id" ]
+  },
+  {
+    "group": "data",
+    "service": "projects/{project_id}/versions/{version_id}/item",
+    "version": "v1",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ ],
+    "param_urlSegment": [ "project_id", "version_id" ]
+  },
+  {
+    "group": "data",
+    "service": "projects/{project_id}/versions/{version_id}/refs",
+    "version": "v1",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ "filter[type]", "filter[id]", "filter[meta.refType]", "filter[meta.direction]", "filter[meta.extension.type]" ],
+    "param_urlSegment": [ "project_id", "version_id" ]
+  },
+  {
+    "group": "data",
+    "service": "projects/{project_id}/versions/{version_id}/relationships/refs",
+    "version": "v1",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ "filter[type]", "filter[id]", "filter[meta.refType]", "filter[meta.direction]", "filter[meta.extension.type]" ],
+    "param_urlSegment": [ "project_id", "version_id" ]
+  },
+  {
+    "group": "data",
+    "service": "projects/{project_id}/versions/{version_id}/relationships/links",
+    "version": "v1",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ "filter[type]", "filter[id]", "filter[meta.extension.type]" ],
+    "param_urlSegment": [ "project_id", "version_id" ]
+  },
+
+  {
+    "group": "oss",
+    "service": "buckets",
+    "version": "v2",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ "region", "limit", "startAt" ],
+    "param_urlSegment": [ ]
+  },
+  {
+    "group": "oss",
+    "service": "buckets/{bucketKey}/details",
+    "version": "v2",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ ],
+    "param_urlSegment": [ "bucketKey" ]
+  },
+  {
+    "group": "oss",
+    "service": "buckets/{bucketKey}/objects/{objectName}/status/{sessionId}",
+    "version": "v2",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ ],
+    "param_urlSegment": [ "bucketKey", "objectName", "sessionId" ]
+  },
+  {
+    "group": "oss",
+    "service": "buckets/{bucketKey}/objects",
+    "version": "v2",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ "limit", "beginsWith", "startAt" ],
+    "param_urlSegment": [ "bucketKey" ]
+  },
+  {
+    "group": "oss",
+    "service": "buckets/{bucketKey}/objects/{objectName}/details",
+    "version": "v2",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ "with" ],
+    "param_urlSegment": [ "bucketKey", "objectName" ]
+  },
+  {
+    "group": "oss",
+    "service": "buckets/{bucketKey}/objects/{objectName}",
+    "version": "v2",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ "with" ],
+    "param_urlSegment": [ "bucketKey", "objectName" ]
+  },
+  {
+    "group": "oss",
+    "service": "signedsources/{id}",
+    "version": "v2",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ "region" ],
+    "param_urlSegment": [ "id" ]
+  },
+
+  {
+    "group": "modelderivative",
+    "service": "designdata/formats",
+    "version": "v2",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ ],
+    "param_urlSegment": [ ]
+  },
+  {
+    "group": "modelderivative",
+    "service": "designdata/{urn}/manifest",
+    "version": "v2",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ ],
+    "param_urlSegment": [ "urn" ]
+  },
+  {
+    "group": "modelderivative",
+    "service": "designdata/{urn}/manifest/{derivativeUrn}",
+    "version": "v2",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ ],
+    "param_urlSegment": [ "urn", "derivativeUrn" ]
+  },
+  {
+    "group": "modelderivative",
+    "service": "designdata/{urn}/metadata",
+    "version": "v2",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ ],
+    "param_urlSegment": [ "urn" ]
+  },
+  {
+    "group": "modelderivative",
+    "service": "designdata/{urn}/metadata/{guid}",
+    "version": "v2",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ ],
+    "param_urlSegment": [ "urn", "guid" ]
+  },
+  {
+    "group": "modelderivative",
+    "service": "designdata/{urn}/metadata/{guid}/properties",
+    "version": "v2",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ ],
+    "param_urlSegment": [ "urn", "guid" ]
+  },
+
+  {
+    "group": "hq",
+    "service": "accounts/{account_id}/projects",
+    "version": "v1",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ "limit", "offset", "sort", "field" ],
+    "param_urlSegment": [ "account_id" ]
+  },
+    {
+        "group": "hq",
+        "service": "accounts/{account_id}/projects/{project_id}",
+        "version": "v1",
+        "method": "GET",
+        "param_required": [ ],
+        "param_optional": [ "limit", "offset", "sort", "field" ],
+        "param_urlSegment": [ "account_id", "project_id" ]
+    },
+
+  {
+    "group": "hq",
+    "service": "accounts/{account_id}/companies",
+    "version": "v1",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ "limit", "offset", "sort", "field" ],
+    "param_urlSegment": [ "account_id" ]
+  },
+  {
+    "group": "hq",
+    "service": "accounts/{account_id}/companies/{company_id}",
+    "version": "v1",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ "limit", "offset", "sort", "field" ],
+    "param_urlSegment": [ "account_id", "company_id" ]
+  },
+  {
+    "group": "hq",
+    "service": "accounts/{account_id}/companies/search",
+    "version": "v1",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ "name", "trade", "operator", "partial", "limit", "offset", "sort", "field" ],
+    "param_urlSegment": [ "account_id" ]
+  },
+  {
+    "group": "hq",
+    "service": "accounts/{account_id}/users",
+    "version": "v1",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ "limit", "offset", "sort", "field" ],
+    "param_urlSegment": [ "account_id" ]
+  },
+  {
+    "group": "hq",
+    "service": "accounts/{account_id}/users/{user_id}",
+    "version": "v1",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ ],
+    "param_urlSegment": [ "account_id", "user_id" ]
+  },
+  {
+    "group": "hq",
+    "service": "accounts/{account_id}/users/search",
+    "version": "v1",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ "name", "email",  "company_name", "operator", "partial", "limit", "offset", "sort", "field" ],
+    "param_urlSegment": [ "account_id" ]
+  },
+  {
+    "group": "hq",
+    "service": "accounts/{account_id}/business_units_structure",
+    "version": "v1",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ ],
+    "param_urlSegment": [ "account_id" ]
+  },
+
+  {
+    "group": "issues",
+    "service": "containers/{container_id}/issues",
+    "version": "v1",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ "filter", "limit", "offset", "sort" ],
+    "param_urlSegment": [ "container_id" ]
+  },
+  {
+    "group": "issues",
+    "service": "containers/{container_id}/issues/{issue_id}",
+    "version": "v1",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ ],
+    "param_urlSegment": [ "container_id", "issue_id" ]
+  },
+  {
+    "group": "issues",
+    "service": "containers/{container_id}/markups",
+    "version": "v1",
+    "method": "GET",
+    "param_required": [ ],
+    "param_optional": [ "filter", "limit", "offset", "sort" ],
+    "param_urlSegment": [ "container_id" ]
+  }
+]
