@@ -26,4 +26,6 @@ http://localhost:1337/oauth_callback
 oauth_callback is a callback defined in app.js.  
 If you want to change the name of callback, you will need to change in app.js as well.   
 
+(3) Alternatively, if you already have a tool to generate token, you can specify the token in the text box, then "Set". The rest will use the token's given.  
+
 I'm aware this is still very rough. I intended to clean it further.  
