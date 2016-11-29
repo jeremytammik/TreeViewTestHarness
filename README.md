@@ -7,8 +7,8 @@ Two places you need to set your own keys and secrets:
 
 (1) Routes/forge.js
 
-var _apiKey = '<your client id comes here>';
-var _apiSecret = '<your secret comes here>'; 
+_apiKey = '<your client id comes here>';
+_apiSecret = '<your secret comes here>'; 
 
 This is for 2-legged authentication. 
 
